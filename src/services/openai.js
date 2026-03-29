@@ -120,33 +120,41 @@ Respond ONLY with valid JSON:
   "notes": "Any extra info like best before 24 months, weight, etc."
 }`;
 
-    const response = await client.chat.completions.create({
-        model: 'gpt-4o-mini',
-        messages: [
-            {
-                role: 'user',
-                content: [
-                    { type: 'text', text: prompt },
-                    {
-                        type: 'image_url',
-                        image_url: {
-                            url: `data:image/jpeg;base64,${base64Image}`,
-                            detail: 'high',
+    let response;
+    try {
+        response = await client.chat.completions.create({
+            model: 'gpt-4o-mini',
+            messages: [
+                {
+                    role: 'user',
+                    content: [
+                        { type: 'text', text: prompt },
+                        {
+                            type: 'image_url',
+                            image_url: {
+                                url: `data:image/jpeg;base64,${base64Image}`,
+                                detail: 'auto',
+                            },
                         },
-                    },
-                ],
-            },
-        ],
-        max_tokens: 500,
-        temperature: 0.2,
-    });
+                    ],
+                },
+            ],
+            max_tokens: 500,
+            temperature: 0.2,
+        });
+    } catch (apiErr) {
+        console.error('OpenAI API error:', apiErr);
+        const status = apiErr?.status || apiErr?.response?.status || '';
+        const msg = apiErr?.message || apiErr?.error?.message || apiErr?.toString() || '';
+        throw new Error(`API error ${status}: ${msg}`);
+    }
 
     let result;
     try {
         const text = response.choices[0].message.content.replace(/```json|```/g, '').trim();
         result = JSON.parse(text);
     } catch {
-        throw new Error('Failed to parse AI label response');
+        throw new Error('AI returned invalid response format');
     }
 
     return {
