@@ -5,6 +5,7 @@ import { format } from 'date-fns';
 
 const client = new OpenAI({
     apiKey: import.meta.env.VITE_OPENAI_API_KEY,
+    baseURL: import.meta.env.VITE_OPENAI_BASE_URL || 'https://api.openai.com/v1',
     dangerouslyAllowBrowser: true,
 });
 
