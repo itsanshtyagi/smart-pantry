@@ -8,7 +8,7 @@ export default function PantryCard({ item, onEdit, onDelete }) {
     const icon = CATEGORY_ICONS[item.category] || '📦';
 
     return (
-        <div className={`bg-white rounded-2xl border ${status.border} p-5 hover:shadow-lg transition-all duration-300 group relative overflow-hidden`}>
+        <div className={`bg-white rounded-2xl border ${status.border} p-4 sm:p-5 hover:shadow-lg transition-all duration-300 group relative overflow-hidden`}>
             {/* Status indicator bar */}
             <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${status.gradient}`} />
 
@@ -16,9 +16,9 @@ export default function PantryCard({ item, onEdit, onDelete }) {
                 <div className="flex items-start gap-3 flex-1 min-w-0">
                     <div className="text-2xl flex-shrink-0 mt-0.5">{icon}</div>
                     <div className="flex-1 min-w-0">
-                        <h3 className="font-semibold text-gray-800 truncate">{item.item_name}</h3>
-                        <p className="text-sm text-gray-500 mt-0.5">{item.category}</p>
-                        <div className="flex items-center gap-2 mt-2">
+                        <h3 className="font-semibold text-gray-800 truncate text-sm sm:text-base">{item.item_name}</h3>
+                        <p className="text-xs sm:text-sm text-gray-500 mt-0.5">{item.category}</p>
+                        <div className="flex items-center gap-2 mt-2 flex-wrap">
                             <Badge variant={item.status === 'fresh' ? 'success' : item.status === 'expiring_soon' ? 'warning' : 'danger'}>
                                 {status.label}
                             </Badge>
@@ -29,8 +29,8 @@ export default function PantryCard({ item, onEdit, onDelete }) {
                     </div>
                 </div>
 
-                {/* Actions */}
-                <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                {/* Actions - always visible on mobile, hover on desktop */}
+                <div className="flex items-center gap-1 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
                     <button
                         onClick={() => onEdit(item)}
                         className="p-2 rounded-lg hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition-colors"
@@ -47,7 +47,7 @@ export default function PantryCard({ item, onEdit, onDelete }) {
             </div>
 
             {/* Expiry info */}
-            <div className={`flex items-center gap-1.5 mt-3 text-sm ${status.text} font-medium`}>
+            <div className={`flex items-center gap-1.5 mt-3 text-xs sm:text-sm ${status.text} font-medium`}>
                 <Clock size={14} />
                 <span>{formatExpiryLabel(item.daysLeft)}</span>
             </div>

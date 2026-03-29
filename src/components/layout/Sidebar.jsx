@@ -37,8 +37,7 @@ export default function Sidebar({ isOpen, onClose }) {
             <aside className={`
         fixed top-0 left-0 h-full w-72 bg-white border-r border-gray-100 z-50
         transform transition-transform duration-300 ease-in-out
-        lg:translate-x-0 lg:static lg:z-auto
-        ${isOpen ? 'translate-x-0' : '-translate-x-full'}
+        ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
         flex flex-col shadow-xl lg:shadow-none
       `}>
                 {/* Logo */}
@@ -67,7 +66,7 @@ export default function Sidebar({ isOpen, onClose }) {
                             to={to}
                             onClick={onClose}
                             className={({ isActive }) =>
-                                `flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 group
+                                `flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200
                 ${isActive
                                     ? 'bg-emerald-50 text-emerald-700 shadow-sm'
                                     : 'text-gray-600 hover:bg-gray-50 hover:text-gray-800'
