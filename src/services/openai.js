@@ -88,3 +88,71 @@ Respond ONLY with a valid JSON array. Each recipe object must have:
 
     return recipes;
 }
+
+export async function scanLabelWithAI(base64Image) {
+    const today = new Date().toISOString().split('T')[0];
+
+    const prompt = `You are a food label reading AI. Analyze this product label image and extract the following information.
+
+Today's date is: ${today}
+
+Look for:
+1. Product name
+2. Manufacturing date (MFG date)
+3. Expiry date / Use by date
+4. "Best before X months/days" — if found, calculate expiry date from MFG date
+5. Category (one of: Fruits & Vegetables, Dairy, Meat & Fish, Grains, Beverages, Snacks, Condiments, Frozen, Bakery, Canned Goods, Other)
+
+Rules:
+- If you find "Best before 24 months" and MFG date is "Jan 2025", then expiry = "Jan 2027"
+- If you find "Best before 12 months" and MFG date is "Mar 2025", then expiry = "Mar 2026"
+- If only MFG date is available with no best-before info, estimate a reasonable expiry
+- Return dates in YYYY-MM-DD format
+- If you cannot read something, use empty string ""
+
+Respond ONLY with valid JSON:
+{
+  "item_name": "Product Name",
+  "category": "Category",
+  "mfg_date": "YYYY-MM-DD",
+  "expiry_date": "YYYY-MM-DD",
+  "notes": "Any extra info like best before 24 months, weight, etc."
+}`;
+
+    const response = await client.chat.completions.create({
+        model: 'gpt-4o-mini',
+        messages: [
+            {
+                role: 'user',
+                content: [
+                    { type: 'text', text: prompt },
+                    {
+                        type: 'image_url',
+                        image_url: {
+                            url: `data:image/jpeg;base64,${base64Image}`,
+                            detail: 'high',
+                        },
+                    },
+                ],
+            },
+        ],
+        max_tokens: 500,
+        temperature: 0.2,
+    });
+
+    let result;
+    try {
+        const text = response.choices[0].message.content.replace(/```json|```/g, '').trim();
+        result = JSON.parse(text);
+    } catch {
+        throw new Error('Failed to parse AI label response');
+    }
+
+    return {
+        item_name: result.item_name || '',
+        category: result.category || 'Other',
+        expiry_date: result.expiry_date || '',
+        notes: result.notes || '',
+    };
+}
+

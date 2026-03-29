@@ -4,11 +4,12 @@ import { usePantryStore } from '../store/pantryStore';
 import PantryCard from '../components/pantry/PantryCard';
 import AddItemModal from '../components/pantry/AddItemModal';
 import BarcodeScanner from '../components/pantry/BarcodeScanner';
+import LabelScanner from '../components/pantry/LabelScanner';
 import CategoryFilter from '../components/pantry/CategoryFilter';
 import Spinner from '../components/ui/Spinner';
 import Button from '../components/ui/Button';
 import { getSortFunction } from '../utils/sortUtils';
-import { Plus, Search, SlidersHorizontal } from 'lucide-react';
+import { Plus, Search, SlidersHorizontal, ScanLine } from 'lucide-react';
 
 export default function Pantry() {
     const { items, loading, addItem, updateItem, deleteItem } = usePantry();
@@ -16,6 +17,7 @@ export default function Pantry() {
     const [showAddModal, setShowAddModal] = useState(false);
     const [editingItem, setEditingItem] = useState(null);
     const [showScanner, setShowScanner] = useState(false);
+    const [showLabelScanner, setShowLabelScanner] = useState(false);
     const [scannedProduct, setScannedProduct] = useState(null);
 
     // Filter & sort
@@ -51,6 +53,12 @@ export default function Pantry() {
         setShowAddModal(true);
     };
 
+    const handleLabelScanned = (product) => {
+        setScannedProduct(product);
+        setShowLabelScanner(false);
+        setShowAddModal(true);
+    };
+
     if (loading) {
         return (
             <div className="flex items-center justify-center h-64">
@@ -60,25 +68,29 @@ export default function Pantry() {
     }
 
     return (
-        <div className="p-6 space-y-6 max-w-7xl mx-auto">
+        <div className="p-4 sm:p-6 space-y-4 sm:space-y-6 max-w-7xl mx-auto">
             {/* Header */}
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div className="flex flex-col gap-3">
                 <div>
-                    <h1 className="text-3xl font-bold text-gray-800">My Pantry</h1>
-                    <p className="text-gray-500 mt-1">{items.length} items tracked</p>
+                    <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">My Pantry</h1>
+                    <p className="text-gray-500 mt-1 text-sm">{items.length} items tracked</p>
                 </div>
-                <div className="flex items-center gap-3">
-                    <Button onClick={() => setShowAddModal(true)}>
-                        <Plus size={18} />
+                <div className="flex flex-wrap gap-2">
+                    <Button onClick={() => setShowAddModal(true)} size="sm">
+                        <Plus size={16} />
                         Add Item
+                    </Button>
+                    <Button onClick={() => setShowLabelScanner(true)} size="sm" variant="secondary">
+                        <ScanLine size={16} />
+                        Scan Label (AI)
                     </Button>
                 </div>
             </div>
 
             {/* Search & Sort */}
-            <div className="flex flex-col sm:flex-row gap-3">
-                <div className="flex-1 flex items-center gap-2 bg-white rounded-xl px-4 py-2.5 border border-gray-200 focus-within:border-emerald-400 focus-within:ring-2 focus-within:ring-emerald-100 transition-all">
-                    <Search size={18} className="text-gray-400" />
+            <div className="flex flex-col gap-3">
+                <div className="flex items-center gap-2 bg-white rounded-xl px-4 py-2.5 border border-gray-200 focus-within:border-emerald-400 focus-within:ring-2 focus-within:ring-emerald-100 transition-all">
+                    <Search size={18} className="text-gray-400 flex-shrink-0" />
                     <input
                         type="text"
                         placeholder="Search items..."
@@ -88,11 +100,11 @@ export default function Pantry() {
                     />
                 </div>
                 <div className="flex items-center gap-2">
-                    <SlidersHorizontal size={18} className="text-gray-400" />
+                    <SlidersHorizontal size={16} className="text-gray-400 flex-shrink-0" />
                     <select
                         value={sortBy}
                         onChange={(e) => setSortBy(e.target.value)}
-                        className="bg-white border border-gray-200 rounded-xl px-3 py-2.5 text-sm text-gray-700 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100"
+                        className="bg-white border border-gray-200 rounded-xl px-3 py-2 text-sm text-gray-700 outline-none focus:border-emerald-400 w-full sm:w-auto"
                     >
                         <option value="expiry">Sort by Expiry</option>
                         <option value="name">Sort by Name</option>
@@ -107,25 +119,23 @@ export default function Pantry() {
 
             {/* Items Grid */}
             {filtered.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
                     {filtered.map(item => (
                         <PantryCard
                             key={item.id}
                             item={item}
-                            onEdit={(item) => {
-                                setEditingItem(item);
-                            }}
+                            onEdit={(item) => setEditingItem(item)}
                             onDelete={handleDelete}
                         />
                     ))}
                 </div>
             ) : (
-                <div className="text-center py-16">
-                    <div className="text-6xl mb-4">🍽️</div>
-                    <h3 className="text-xl font-bold text-gray-800 mb-2">
+                <div className="text-center py-12 sm:py-16">
+                    <div className="text-5xl sm:text-6xl mb-4">🍽️</div>
+                    <h3 className="text-lg sm:text-xl font-bold text-gray-800 mb-2">
                         {searchQuery || selectedCategory !== 'All' ? 'No matching items' : 'Your pantry is empty'}
                     </h3>
-                    <p className="text-gray-500 mb-6">
+                    <p className="text-gray-500 mb-6 text-sm">
                         {searchQuery || selectedCategory !== 'All'
                             ? 'Try adjusting your filters'
                             : 'Add your first item to get started!'}
@@ -163,6 +173,14 @@ export default function Pantry() {
                 <BarcodeScanner
                     onProductFound={handleProductScanned}
                     onClose={() => setShowScanner(false)}
+                />
+            )}
+
+            {/* AI Label Scanner */}
+            {showLabelScanner && (
+                <LabelScanner
+                    onProductFound={handleLabelScanned}
+                    onClose={() => setShowLabelScanner(false)}
                 />
             )}
         </div>
