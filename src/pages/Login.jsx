@@ -13,13 +13,17 @@ export default function Login() {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-emerald-50 via-green-50 to-teal-50 relative overflow-hidden">
-            {/* Background decoration */}
-            <div className="absolute top-0 left-0 w-96 h-96 bg-emerald-200/30 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2" />
-            <div className="absolute bottom-0 right-0 w-96 h-96 bg-teal-200/30 rounded-full blur-3xl translate-x-1/2 translate-y-1/2" />
-            <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-green-200/20 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2" />
+        <div 
+            className="min-h-screen flex items-center justify-center relative overflow-hidden"
+            style={{
+                backgroundImage: 'url(/pantry-bg.png)',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat',
+            }}
+        >
 
-            <div className="relative bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl shadow-emerald-100/50 p-12 max-w-md w-full mx-4 border border-white/50">
+            <div className="relative bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl shadow-emerald-100/50 p-12 max-w-md w-full mx-4 border-2 border-emerald-200">
                 {/* Logo */}
                 <div className="flex justify-center mb-6">
                     <div className="w-20 h-20 bg-gradient-to-br from-emerald-400 to-green-600 rounded-2xl flex items-center justify-center shadow-xl shadow-emerald-200 rotate-3 hover:rotate-0 transition-transform duration-300">
