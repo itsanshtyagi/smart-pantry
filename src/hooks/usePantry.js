@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { supabase } from '../services/supabase';
 import { useAuthStore } from '../store/authStore';
 import { getDaysUntilExpiry, getExpiryStatus } from '../utils/dateUtils';
+import { checkAndCreateExpiryNotifications, deleteNotificationsByItemId } from '../services/notifications';
 
 export function usePantry() {
     const { user } = useAuthStore();
@@ -24,7 +25,11 @@ export function usePantry() {
             .order('expiry_date', { ascending: true });
 
         if (!error && data) {
-            setItems(data.map(enrichItem));
+            const enrichedItems = data.map(enrichItem);
+            setItems(enrichedItems);
+
+            // Trigger expiry notification checks after loading items
+            checkAndCreateExpiryNotifications(user.id, enrichedItems).catch(console.error);
         }
         setLoading(false);
     };
@@ -52,7 +57,11 @@ export function usePantry() {
 
     const deleteItem = async (id) => {
         const { error } = await supabase.from('pantry_items').delete().eq('id', id);
-        if (!error) setItems(prev => prev.filter(i => i.id !== id));
+        if (!error) {
+            setItems(prev => prev.filter(i => i.id !== id));
+            // Auto-dismiss any notifications linked to this item
+            deleteNotificationsByItemId(user.id, id).catch(console.error);
+        }
         return { error };
     };
 
