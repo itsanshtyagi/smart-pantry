@@ -35,13 +35,13 @@ export default function Analytics() {
         <div className="p-6 space-y-8 max-w-7xl mx-auto">
             {/* Header */}
             <div>
-                <h1 className="text-3xl font-bold text-gray-800 flex items-center gap-3">
-                    <div className="w-10 h-10 bg-gradient-to-br from-orange-400 to-amber-500 rounded-xl flex items-center justify-center shadow-lg shadow-orange-200">
+                <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-100 flex items-center gap-3">
+                    <div className="w-10 h-10 bg-gradient-to-br from-orange-400 to-amber-500 rounded-xl flex items-center justify-center shadow-lg shadow-orange-200 dark:shadow-orange-900/40">
                         <TrendingUp size={20} className="text-white" />
                     </div>
                     Analytics
                 </h1>
-                <p className="text-gray-500 mt-2">Track your food consumption and waste patterns.</p>
+                <p className="text-gray-500 dark:text-gray-400 mt-2">Track your food consumption and waste patterns.</p>
             </div>
 
             {/* Summary Cards */}
@@ -54,31 +54,32 @@ export default function Analytics() {
             {/* Charts */}
             <div className="grid md:grid-cols-2 gap-6">
                 {/* Status Pie Chart */}
-                <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-                    <h2 className="text-lg font-bold text-gray-800 mb-4">Pantry Status</h2>
+                <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-800">
+                    <h2 className="text-lg font-bold text-gray-800 dark:text-gray-100 mb-4">Pantry Status</h2>
                     <WasteChart fresh={fresh} expiring={expiring} expired={expired} />
                 </div>
 
                 {/* Category Bar Chart */}
-                <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-                    <h2 className="text-lg font-bold text-gray-800 mb-4">Items by Category</h2>
+                <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-800">
+                    <h2 className="text-lg font-bold text-gray-800 dark:text-gray-100 mb-4">Items by Category</h2>
                     {categoryData.length > 0 ? (
                         <ResponsiveContainer width="100%" height={280}>
                             <BarChart data={categoryData} layout="vertical" margin={{ left: 20, right: 20 }}>
-                                <XAxis type="number" allowDecimals={false} />
-                                <YAxis type="category" dataKey="category" tick={{ fontSize: 12 }} width={120} />
+                                <XAxis type="number" allowDecimals={false} stroke="#6b7280" tick={{ fill: '#6b7280' }} />
+                                <YAxis type="category" dataKey="category" tick={{ fontSize: 12, fill: '#6b7280' }} width={120} />
                                 <Tooltip
                                     contentStyle={{
                                         borderRadius: '12px',
                                         border: 'none',
-                                        boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
+                                        boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
+                                        background: 'var(--tooltip-bg, #fff)',
                                     }}
                                 />
                                 <Bar dataKey="count" fill="#10b981" radius={[0, 6, 6, 0]} />
                             </BarChart>
                         </ResponsiveContainer>
                     ) : (
-                        <div className="flex items-center justify-center h-64 text-gray-400">
+                        <div className="flex items-center justify-center h-64 text-gray-400 dark:text-gray-600">
                             No data to display
                         </div>
                     )}
@@ -87,20 +88,20 @@ export default function Analytics() {
 
             {/* Insights */}
             {items.length > 0 && (
-                <div className="bg-gradient-to-r from-emerald-50 to-teal-50 rounded-2xl p-6 border border-emerald-100">
-                    <h2 className="text-lg font-bold text-emerald-800 mb-3">💡 Insights</h2>
+                <div className="bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 rounded-2xl p-6 border border-emerald-100 dark:border-emerald-800/30">
+                    <h2 className="text-lg font-bold text-emerald-800 dark:text-emerald-300 mb-3">💡 Insights</h2>
                     <div className="grid md:grid-cols-2 gap-4">
-                        <div className="bg-white/60 rounded-xl p-4">
-                            <p className="text-sm text-gray-600">
-                                <span className="font-semibold text-emerald-700">
+                        <div className="bg-white/60 dark:bg-gray-900/60 rounded-xl p-4">
+                            <p className="text-sm text-gray-600 dark:text-gray-300">
+                                <span className="font-semibold text-emerald-700 dark:text-emerald-400">
                                     {items.length > 0 ? ((fresh / items.length) * 100).toFixed(0) : 0}%
                                 </span> of your items are still fresh
                             </p>
                         </div>
-                        <div className="bg-white/60 rounded-xl p-4">
-                            <p className="text-sm text-gray-600">
+                        <div className="bg-white/60 dark:bg-gray-900/60 rounded-xl p-4">
+                            <p className="text-sm text-gray-600 dark:text-gray-300">
                                 Most stocked category:{' '}
-                                <span className="font-semibold text-emerald-700">
+                                <span className="font-semibold text-emerald-700 dark:text-emerald-400">
                                     {categoryData[0]?.category || 'N/A'}
                                 </span>
                             </p>

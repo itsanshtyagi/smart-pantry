@@ -8,7 +8,7 @@ export default function PantryCard({ item, onEdit, onDelete }) {
     const icon = CATEGORY_ICONS[item.category] || '📦';
 
     return (
-        <div className={`bg-white rounded-2xl border ${status.border} p-4 sm:p-5 hover:shadow-lg transition-all duration-300 group relative overflow-hidden`}>
+        <div className={`bg-white dark:bg-gray-900 rounded-2xl border ${status.border} dark:border-gray-800 p-4 sm:p-5 hover:shadow-lg transition-all duration-300 group relative overflow-hidden`}>
             {/* Status indicator bar */}
             <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${status.gradient}`} />
 
@@ -16,13 +16,13 @@ export default function PantryCard({ item, onEdit, onDelete }) {
                 <div className="flex items-start gap-3 flex-1 min-w-0">
                     <div className="text-2xl flex-shrink-0 mt-0.5">{icon}</div>
                     <div className="flex-1 min-w-0">
-                        <h3 className="font-semibold text-gray-800 truncate text-sm sm:text-base">{item.item_name}</h3>
-                        <p className="text-xs sm:text-sm text-gray-500 mt-0.5">{item.category}</p>
+                        <h3 className="font-semibold text-gray-800 dark:text-gray-100 truncate text-sm sm:text-base">{item.item_name}</h3>
+                        <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-0.5">{item.category}</p>
                         <div className="flex items-center gap-2 mt-2 flex-wrap">
                             <Badge variant={item.status === 'fresh' ? 'success' : item.status === 'expiring_soon' ? 'warning' : 'danger'}>
                                 {status.label}
                             </Badge>
-                            <span className="text-xs text-gray-400">
+                            <span className="text-xs text-gray-400 dark:text-gray-500">
                                 {item.quantity} {item.unit}
                             </span>
                         </div>
@@ -33,13 +33,13 @@ export default function PantryCard({ item, onEdit, onDelete }) {
                 <div className="flex items-center gap-1 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
                     <button
                         onClick={() => onEdit(item)}
-                        className="p-2 rounded-lg hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition-colors"
+                        className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors"
                     >
                         <Edit3 size={16} />
                     </button>
                     <button
                         onClick={() => onDelete(item.id)}
-                        className="p-2 rounded-lg hover:bg-red-50 text-gray-400 hover:text-red-500 transition-colors"
+                        className="p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 text-gray-400 hover:text-red-500 dark:hover:text-red-400 transition-colors"
                     >
                         <Trash2 size={16} />
                     </button>
@@ -53,7 +53,7 @@ export default function PantryCard({ item, onEdit, onDelete }) {
             </div>
 
             {item.notes && (
-                <p className="text-xs text-gray-400 mt-2 line-clamp-2">{item.notes}</p>
+                <p className="text-xs text-gray-400 dark:text-gray-500 mt-2 line-clamp-2">{item.notes}</p>
             )}
         </div>
     );

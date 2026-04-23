@@ -72,8 +72,8 @@ export default function Pantry() {
             {/* Header */}
             <div className="flex flex-col gap-3">
                 <div>
-                    <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">My Pantry</h1>
-                    <p className="text-gray-500 mt-1 text-sm">{items.length} items tracked</p>
+                    <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-gray-100">My Pantry</h1>
+                    <p className="text-gray-500 dark:text-gray-400 mt-1 text-sm">{items.length} items tracked</p>
                 </div>
                 <div className="flex flex-wrap gap-2">
                     <Button onClick={() => setShowAddModal(true)} size="sm">
@@ -89,22 +89,22 @@ export default function Pantry() {
 
             {/* Search & Sort */}
             <div className="flex flex-col gap-3">
-                <div className="flex items-center gap-2 bg-white rounded-xl px-4 py-2.5 border border-gray-200 focus-within:border-emerald-400 focus-within:ring-2 focus-within:ring-emerald-100 transition-all">
-                    <Search size={18} className="text-gray-400 flex-shrink-0" />
+                <div className="flex items-center gap-2 bg-white dark:bg-gray-900 rounded-xl px-4 py-2.5 border border-gray-200 dark:border-gray-700 focus-within:border-emerald-400 focus-within:ring-2 focus-within:ring-emerald-100 dark:focus-within:ring-emerald-900/30 transition-all">
+                    <Search size={18} className="text-gray-400 dark:text-gray-500 flex-shrink-0" />
                     <input
                         type="text"
                         placeholder="Search items..."
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        className="bg-transparent border-none outline-none text-sm text-gray-700 w-full placeholder-gray-400"
+                        className="bg-transparent border-none outline-none text-sm text-gray-700 dark:text-gray-300 w-full placeholder-gray-400 dark:placeholder-gray-600"
                     />
                 </div>
                 <div className="flex items-center gap-2">
-                    <SlidersHorizontal size={16} className="text-gray-400 flex-shrink-0" />
+                    <SlidersHorizontal size={16} className="text-gray-400 dark:text-gray-500 flex-shrink-0" />
                     <select
                         value={sortBy}
                         onChange={(e) => setSortBy(e.target.value)}
-                        className="bg-white border border-gray-200 rounded-xl px-3 py-2 text-sm text-gray-700 outline-none focus:border-emerald-400 w-full sm:w-auto"
+                        className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl px-3 py-2 text-sm text-gray-700 dark:text-gray-300 outline-none focus:border-emerald-400 w-full sm:w-auto transition-colors"
                     >
                         <option value="expiry">Sort by Expiry</option>
                         <option value="name">Sort by Name</option>
@@ -132,10 +132,10 @@ export default function Pantry() {
             ) : (
                 <div className="text-center py-12 sm:py-16">
                     <div className="text-5xl sm:text-6xl mb-4">🍽️</div>
-                    <h3 className="text-lg sm:text-xl font-bold text-gray-800 mb-2">
+                    <h3 className="text-lg sm:text-xl font-bold text-gray-800 dark:text-gray-100 mb-2">
                         {searchQuery || selectedCategory !== 'All' ? 'No matching items' : 'Your pantry is empty'}
                     </h3>
-                    <p className="text-gray-500 mb-6 text-sm">
+                    <p className="text-gray-500 dark:text-gray-400 mb-6 text-sm">
                         {searchQuery || selectedCategory !== 'All'
                             ? 'Try adjusting your filters'
                             : 'Add your first item to get started!'}

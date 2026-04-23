@@ -34,24 +34,24 @@ export default function Recipes() {
         <div className="p-6 space-y-6 max-w-7xl mx-auto">
             {/* Header */}
             <div>
-                <h1 className="text-3xl font-bold text-gray-800 flex items-center gap-3">
-                    <div className="w-10 h-10 bg-gradient-to-br from-purple-400 to-violet-500 rounded-xl flex items-center justify-center shadow-lg shadow-purple-200">
+                <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-100 flex items-center gap-3">
+                    <div className="w-10 h-10 bg-gradient-to-br from-purple-400 to-violet-500 rounded-xl flex items-center justify-center shadow-lg shadow-purple-200 dark:shadow-purple-900/40">
                         <ChefHat size={20} className="text-white" />
                     </div>
                     AI Recipe Suggestions
                 </h1>
-                <p className="text-gray-500 mt-2">Smart recipes based on what's in your pantry.</p>
+                <p className="text-gray-500 dark:text-gray-400 mt-2">Smart recipes based on what's in your pantry.</p>
             </div>
 
             {/* Expiring items notice */}
             {expiringSoon.length > 0 && (
-                <div className="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-2xl p-5 flex items-start gap-3">
-                    <AlertTriangle className="text-amber-600 flex-shrink-0 mt-0.5" size={20} />
+                <div className="bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 border border-amber-200 dark:border-amber-800/40 rounded-2xl p-5 flex items-start gap-3">
+                    <AlertTriangle className="text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" size={20} />
                     <div>
-                        <p className="text-sm font-semibold text-amber-800">
+                        <p className="text-sm font-semibold text-amber-800 dark:text-amber-300">
                             You have <strong>{expiringSoon.length} items expiring soon</strong>
                         </p>
-                        <p className="text-sm text-amber-600 mt-1">AI will prioritize these in recipe suggestions.</p>
+                        <p className="text-sm text-amber-600 dark:text-amber-400 mt-1">AI will prioritize these in recipe suggestions.</p>
                     </div>
                 </div>
             )}
@@ -77,7 +77,7 @@ export default function Recipes() {
 
             {/* Error */}
             {error && (
-                <div className="bg-red-50 text-red-700 border border-red-200 rounded-xl p-4 text-sm">
+                <div className="bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400 border border-red-200 dark:border-red-800/40 rounded-xl p-4 text-sm">
                     {error}
                 </div>
             )}
@@ -95,8 +95,8 @@ export default function Recipes() {
             {recipes.length === 0 && !loading && (
                 <div className="text-center py-16">
                     <div className="text-7xl mb-4">🍽️</div>
-                    <h3 className="text-xl font-bold text-gray-800 mb-2">No recipes yet</h3>
-                    <p className="text-gray-500 max-w-md mx-auto">
+                    <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-2">No recipes yet</h3>
+                    <p className="text-gray-500 dark:text-gray-400 max-w-md mx-auto">
                         Click "Generate Recipes" to get AI-powered recipe suggestions based on your pantry items.
                     </p>
                 </div>

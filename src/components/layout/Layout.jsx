@@ -7,7 +7,7 @@ export default function Layout() {
     const [sidebarOpen, setSidebarOpen] = useState(false);
 
     return (
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen bg-gray-50 dark:bg-gray-950 transition-colors duration-300">
             {/* Sidebar */}
             <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
@@ -21,3 +21,4 @@ export default function Layout() {
         </div>
     );
 }
+
